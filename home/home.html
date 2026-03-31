@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn  - Home Feed</title>
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <h1 class="logo">LinkedIn</h1>
+        <input type="text" id="userSearchInput" class="search-bar" placeholder="Search users..." aria-label="Search users">
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="../network/network.html">Network</a>
+            <a href="../jobs/jobs.html">Jobs</a>
+            <a href="../messages/messages.html">Messages</a>
+            <a href="../notifications/notifications.html">Notifications</a>
+            <a href="../profile/profile.html">Profile</a>
+            <button id="themeToggleBtn" class="theme-toggle" title="Toggle Dark Mode">🌙</button>
+        </div>
+    </div>
+
+    <main class="main-container">
+
+        <aside class="left-column box">
+            <div class="gray-box"></div>
+            <h3 id="profileName">Guest User</h3>
+            <p id="profileTitle">Please sign in</p>
+            <div id="authActions" class="auth-actions">
+                <a href="../auth/login.html">Sign In</a>
+                <a href="../auth/register.html">Register</a>
+            </div>
+            <hr>
+            <div class="profile-stats">
+                <p>Connections: <strong>124</strong></p>
+                <p>Profile Views: <strong>15</strong></p>
+                <p>Post Impressions: <strong>78</strong></p>
+            </div>
+        </aside>
+
+        <section class="middle-column">
+            <div class="box user-search-results" id="userSearchResults" hidden>
+                <h3>User Search Results</h3>
+                <ul id="userSearchList"></ul>
+                <p id="userSearchEmpty" hidden>No users found.</p>
+            </div>
+
+            <div class="create-post-box box" id="createPostBox">
+                <h3>Create a post</h3>
+                <textarea id="postInput" placeholder="What do you want to talk about?"></textarea>
+                <button id="postBtn" class="post-btn" type="button">Post</button>
+                <p id="postStatus" class="post-status" aria-live="polite"></p>
+            </div>
+
+            <div id="userPostsContainer"></div>
+
+            <div class="post box">
+                <div class="post-author">
+                    <h4>Priya Patel</h4>
+                    <p class="author-title">Software Engineer at Tech Solutions</p>
+                </div>
+                <div class="post-text">
+                    <p>I just started learning HTML and CSS! It is hard but I am enjoying the process. Here is my first layout. #coding #fresher</p>
+                </div>
+                <hr>
+                <div class="post-buttons">
+                    <button type="button">Like</button>
+                    <button type="button">Comment</button>
+                    <button type="button">Share</button>
+                </div>
+            </div>
+
+            <div class="post box">
+                <div class="post-author">
+                    <h4>Amit Kumar</h4>
+                    <p class="author-title">HR Manager</p>
+                </div>
+                <div class="post-text">
+                    <p>We are hiring! Looking for freshers who know basic HTML, CSS, and SQL. Send your resumes.</p>
+                </div>
+                <hr>
+                <div class="post-buttons">
+                    <button type="button">Like</button>
+                    <button type="button">Comment</button>
+                    <button type="button">Share</button>
+                </div>
+            </div>
+        </section>
+
+        <aside class="right-column box">
+            <h3>Trending News</h3>
+            <ul class="news-list">
+                <li>IT companies hiring freshers this month.</li>
+                <li>New JavaScript framework released for web apps.</li>
+                <li>How to ace your database interview in 2026.</li>
+                <li>Internship opportunities in product and growth teams.</li>
+            </ul>
+            <div class="mini-card">
+                <h4>Top Voice Tip</h4>
+                <p>Keep your profile headline clear and role-focused. Recruiters scan quickly.</p>
+            </div>
+        </aside>
+
+    </main>
+
+    <script src="../common.js"></script>
+    <script src="../index.js"></script>
+    <script src="home.js"></script>
+
+</body>
+</html>

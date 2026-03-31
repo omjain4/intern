@@ -1,0 +1,129 @@
+/* Profile Page Styles */
+.profile-container {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.profile-banner {
+    background-color: #0073b1;
+    height: 120px;
+    border-radius: 5px 5px 0 0;
+}
+
+.profile-info {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.profile-photo-placeholder {
+    width: 80px;
+    height: 80px;
+    background-color: darkgray;
+    border-radius: 50%;
+    margin-top: -50px;
+}
+
+.profile-info h2 {
+    margin-top: 10px;
+}
+
+.profile-info .headline {
+    color: gray;
+    font-size: 14px;
+}
+
+.logout-btn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccd3da;
+    background-color: #fff;
+    color: #1f2328;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #f2f4f7;
+}
+
+
+.box {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    color: #0073b1;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.education-item {
+    margin-bottom: 10px;
+}
+
+.education-item h4 {
+    margin-bottom: 3px;
+}
+
+.education-item p {
+    font-size: 13px;
+    color: #555;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-tag {
+    background-color: #e8f0fe;
+    color: #0073b1;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 0 10px;
+    }
+
+    .profile-banner {
+        height: 90px;
+    }
+
+    .profile-photo-placeholder {
+        width: 65px;
+        height: 65px;
+        margin-top: -40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-banner {
+        height: 70px;
+    }
+
+    .profile-info {
+        padding: 15px;
+    }
+
+    .skill-tag {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+}

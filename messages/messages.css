@@ -1,0 +1,143 @@
+/* Messages Page Styles */
+.messages-container {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 0 15px;
+    display: flex;
+    gap: 15px;
+    height: 500px;
+}
+
+.conversations-list {
+    width: 220px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+.conversations-list h3 {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.conversation-item {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.conversation-item:hover {
+    background-color: #f0f2f5;
+}
+
+.conversation-item .name {
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.conversation-item .preview {
+    font-size: 12px;
+    color: gray;
+}
+
+.chat-area {
+    flex: 1;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 12px;
+    max-width: 70%;
+}
+
+.message.sent {
+    margin-left: auto;
+    background-color: #0073b1;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+
+.message.received {
+    background-color: #e8e8e8;
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+
+.message .time {
+    font-size: 10px;
+    margin-top: 3px;
+    opacity: 0.7;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    gap: 8px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.chat-input button {
+    background-color: #0073b1;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .messages-container {
+        flex-direction: column;
+        height: auto;
+        padding: 0 10px;
+    }
+
+    .conversations-list {
+        width: 100%;
+        max-height: 200px;
+    }
+
+    .chat-area {
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .conversations-list {
+        max-height: 150px;
+    }
+
+    .chat-input button {
+        padding: 8px 12px;
+    }
+
+    .message {
+        max-width: 85%;
+    }
+}

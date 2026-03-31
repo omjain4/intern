@@ -1,0 +1,82 @@
+/* Network Page Styles */
+.network-container {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 0 15px;
+    
+}
+
+.connection-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.connection-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.connection-avatar {
+    width: 45px;
+    height: 45px;
+    background-color: darkgray;
+    border-radius: 50%;
+}
+
+.connection-name {
+    font-weight: bold;
+}
+
+.connection-title {
+    font-size: 13px;
+    color: gray;
+}
+
+.btn-connect, .btn-accept, .btn-pending {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.btn-connect {
+    background-color: #0073b1;
+    color: white;
+}
+
+.btn-accept {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .network-container {
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .connection-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .connection-info {
+        gap: 8px;
+    }
+
+    .connection-avatar {
+        width: 35px;
+        height: 35px;
+    }
+}
