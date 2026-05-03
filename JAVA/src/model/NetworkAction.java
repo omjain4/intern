@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface NetworkAction {
     // Only one abstract method allowed in functional interfaces
     void performAction(User user);
+
 }

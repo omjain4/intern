@@ -1,88 +1,78 @@
-import model.Company;
-import model.Displayable;
-import model.Job;
-import model.Post;
-import model.User;
-import model.NetworkAction;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import controllers.*;
+import model.*;
+import model.Post.PostType;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== LinkedIn Clone Core Features (Java 8 Enhanced) ===\n");
-        // Java 8 Feature: Calling a Static Method from Interface
-        System.out.println("System Version: " + Displayable.getSystemVersion() + "\n");
+        System.out.println("--- LINKEDIN DEMO (WITH CONTROLLERS) ---\n");
 
-        // 1. Creating Users
-        System.out.println("--- 1. Users ---");
-        User user1 = new User(1, "alice@example.com", "developer", "555-1234");
-        User user2 = new User(2, "bob@example.com", "recruiter", null); // Bob has no phone number
-        List<User> users = Arrays.asList(user1, user2); // Using Arrays.asList for Java 8
+        // 1. Initialize Controllers
+        UserController userController = new UserController();
+        ProfileController profileController = new ProfileController();
+        JobController jobController = new JobController();
+        CompanyController companyController = new CompanyController();
+        PostController postController = new PostController();
+
+        // 2. Users: Create and Register via Controller
+        System.out.println(">>> 1. USERS & PROFILES");
+        User alice = new User(1, "AliceDev", "alice@example.com", "pass123", "user", "555-1234");
+        User bob = new User(2, "BobRecruiter", "bob@example.com", "secure456", "recruiter", null);
         
-        // Java 8 Feature: Method References (iterating and calling instance methods)
-        users.forEach(User::displayUserInfo);
-        
-        System.out.println("\n--- Java 8 Default Methods & Optional ---");
-        // Java 8 Feature: Default Interface Methods & Optional
-        for (User user : users) {
-             user.displayWelcomeMessage(); // from Displayable
-             user.displayBasicInfo(); // implemented abstract
-             
-             // Java 8 Feature: Optional usage with if-else and ifPresent lambda
-             if (user.getPhone().isPresent()) {
-                 user.getPhone().ifPresent(phone -> System.out.println("Phone number is present: " + phone));
-             } else {
-                 System.out.println(user.getEmail() + " does not have a phone number registered.");
-             }
+        userController.registerUser(alice);
+        userController.registerUser(bob);
+
+        // Test login
+        User loggedInUser = userController.loginUser("alice@example.com", "pass123");
+        if (loggedInUser != null) {
+            System.out.println("Alice is logged in!\n");
         }
-        System.out.println();
 
-        // 2. Creating Companies
-        System.out.println("--- 2. Companies ---");
-        Company company1 = new Company(101, "TechCorp Solutions", "Software", "New York");
-        Company company2 = new Company(102, "DataSmart Inc.", "Data Analytics", "San Francisco");
+        // Create profiles for them
+        Profile aliceProfile = new Profile(1, alice.getUserId(), "Alice Smith", "Software Engineer", null);
+        Profile bobProfile = new Profile(2, bob.getUserId(), "Bob Johnson", "Tech Recruiter at FutureJobs", null);
+        profileController.addProfile(aliceProfile);
+        profileController.addProfile(bobProfile);
 
-        company1.printCompanyDetails();
-        company2.printCompanyDetails();
-        System.out.println();
+        // Update profiles using controller logic
+        profileController.updateProfileHeadlineAndSummary(alice.getUserId(), "Senior Java Developer", "Passionate about building scalable systems.");
+        profileController.addExperienceToProfile(alice.getUserId(), "Java Backend Dev", "TechCorp", "2020-2025");
+        profileController.addSkillToProfile(alice.getUserId(), "Java");
+        profileController.addSkillToProfile(alice.getUserId(), "Spring Boot");
 
-        // 3. Creating Jobs
-        System.out.println("--- 3. Job Postings ---");
-        List<Job> jobList = new ArrayList<>();
-        // Java 8 Feature: java.time API (LocalDateTime)
-        jobList.add(new Job(1, "Java SpringBoot Developer", "New York", 110000, LocalDateTime.now()));
-        jobList.add(new Job(2, "Frontend React Engineer", "Remote", 95000, LocalDateTime.now()));
-        jobList.add(new Job(3, "Junior HTML Analyst", "New York", 50000, LocalDateTime.now().minusDays(2)));
+        System.out.println("\n>>> 2. COMPANIES & JOBS");
+        // Add companies
+        Company comp1 = new Company(1, "TechCorp", "IT", "New York");
+        companyController.addCompany(comp1);
 
-        // Java 8 Feature: Streams & Filters
-        System.out.println("\n--- Java 8 Streams (Filter NYC jobs paying > 100k) ---");
-        List<Job> filteredJobs = jobList.stream()
-            .filter(job -> job.getLocation().equals("New York"))
-            .filter(job -> job.getSalary() > 100000)
-            .collect(Collectors.toList());
+        // Add jobs via JobController
+        Job job1 = new Job(1, "Senior Java Developer", "New York", 120000, java.time.LocalDateTime.now());
+        Job job2 = new Job(2, "Junior QA Engineer", "Remote", 60000, java.time.LocalDateTime.now());
+        jobController.addJob(job1);
+        jobController.addJob(job2);
 
-        filteredJobs.forEach(job -> {
-            System.out.println("Premium NYC Job: " + job.getTitle() + " ($" + job.getSalary() + ")");
-        });
-        System.out.println();
+        // View premium jobs
+        System.out.println("Filtering Jobs > $100k:");
+        for (Job j : jobController.filterByMinimumSalary(100000)) {
+            System.out.println(" - " + j.getTitle() + " paying " + j.getSalary());
+        }
 
-        // 4. Using Custom Functional Interfaces & Lambdas 
-        System.out.println("--- 4. Functional Interfaces & Custom Lambdas ---");
-        // Java 8 Feature: Custom Functional Interface (@FunctionalInterface) & Lambda implementation
-        NetworkAction sendConnectionRequest = u -> System.out.println("Sending a connection request to: " + u.getEmail());
+        System.out.println("\n>>> 3. POSTS & FEED");
+        // Create posts via PostController
+        Post p1 = postController.createPost(alice.getUserId(), "I'm thrilled to announce I just mastered Java Controllers!", PostType.CELEBRATION);
+        Post p2 = postController.createPost(bob.getUserId(), "TechCorp is hiring for Java roles! Check my page.", PostType.NORMAL);
         
-        // Execute the lambda action
-        sendConnectionRequest.performAction(user1);
-        sendConnectionRequest.performAction(user2);
+        // Simulating likes
+        if (p1 != null) postController.likePost(p1.getPostId());
+        if (p1 != null) postController.likePost(p1.getPostId()); // 2 likes
 
-        // 5. Creating Posts & Reacting to them
-        System.out.println("\n--- 5. Posts & Reactions ---");
-        Post post1 = new Post(1, user1.getUserId(), "Just learned some awesome Java basic features!");
-        post1.addLike();
-        post1.displayPost();
+        System.out.println("\nChecking Alice's Activity:");
+        for (Post p : postController.getPostsByUser(alice.getUserId())) {
+            p.displayPost();
+        }
+
+        System.out.println("\nChecking the Trending Feed:");
+        for (Post p : postController.getTrendingPosts()) {
+            p.displayPost();
+        }
     }
 }

@@ -13,6 +13,10 @@ public class Company {
         this.location = location;
     }
 
+    public int getCompanyId() {
+        return companyId;
+    }
+
     public String getName() {
         return name;
     }
