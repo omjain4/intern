@@ -80,6 +80,7 @@ const debouncedSearch = debounce((query) => {
     performUserSearch(query);
 }, 500);
 
+
 //THROTTLE FUNCTION
 // Limits function execution to at most once per specified interval
 
@@ -126,7 +127,7 @@ async function loadMorePosts() {
     }
 }
 
-// Async function to perform user search with async/await - searches real localStorage users
+// Async function to searche real localStorage users
 async function performUserSearch(query) {
     try {
         // Get all users from localStorage
@@ -271,6 +272,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+
     // Setup post button
     const postBtn = document.getElementById('postBtn');
     if (postBtn) {
@@ -293,10 +295,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Setup scroll listener with throttle
     window.addEventListener('scroll', throttledScroll);
 
-    // Demo: Load user profile on page load
-    // Uncomment to test: await loadUserProfile(1);
-    // Demo: Load dashboard data in parallel
-    // Uncomment to test: await loadDashboardData(1);
 });
 
 //HELPER FUNCTIONS
