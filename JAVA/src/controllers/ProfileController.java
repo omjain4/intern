@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class ProfileController {
-    // Using HashMap for O(1) fast lookup by User ID
     private Map<Integer, Profile> profiles;
 
     public ProfileController() {
@@ -35,29 +34,50 @@ public class ProfileController {
         }
     }
 
-    // LinkedIn-like logic: Get Profile by User ID using HashMap lookup
+   //getting profile using hashmap
     public Profile getProfileByUserId(int userId) {
-        // Benefit of HashMap: No loop required to find by ID!
         return profiles.get(userId);
     }
 
-    // LinkedIn-like logic: Update headline & summary
-    public void updateProfileHeadlineAndSummary(int userId, String headline, String summary) {
-        Profile profile = getProfileByUserId(userId);
-        if (profile != null) {
-            profile.setHeadline(headline);
-            profile.setSummary(summary);
-            System.out.println("Profile updated successfully.");
-        } else {
-            System.out.println("Error: Profile not found.");
-        }
+    //Ensures the headline isn't too long
+public void setProfileHeadline(int userId, String newHeadline) {
+    Profile profile = getProfileByUserId(userId); //
+    
+    if (profile == null) {
+        System.out.println("Error: Profile not found.");
+        return;
     }
 
-    // LinkedIn-like logic: Add an experience to a user's profile
+    //Limit headline to 100 characters
+    if (newHeadline != null && newHeadline.length() <= 100) {
+        profile.setHeadline(newHeadline);
+        System.out.println("Headline updated.");
+    } else {
+        System.out.println("Error: Headline is too long (Max 100 chars).");
+    }
+}
+
+//Ensure the summary is minimum 10 words
+public void setProfileSummary(int userId, String newSummary) {
+    Profile profile = getProfileByUserId(userId); //
+
+    if (profile != null) {
+        if (newSummary != null && newSummary.trim().split("\\s+").length >= 10) {
+            profile.setSummary(newSummary);
+            System.out.println("Summary updated.");
+        } else {
+            System.out.println("Error: Summary must be at least 10 words long.");
+        }
+    }
+}  
+
+
+    //Add an experience to a user's profile
     public void addExperienceToProfile(int userId, String jobTitle, String company, String duration) {
         Profile profile = getProfileByUserId(userId);
         if (profile != null) {
-            profile.addExperience(jobTitle, company, duration);
+            String entry = jobTitle + " at " + company + " (" + duration + ")";
+            profile.getExperience().add(entry);
             System.out.println("Experience added.");
         }
     }
@@ -66,22 +86,15 @@ public class ProfileController {
     public void addSkillToProfile(int userId, String skill) {
         Profile profile = getProfileByUserId(userId);
         if (profile != null) {
-            profile.addSkill(skill);
-            System.out.println("Skill added.");
-        }
-    }
-
-    // Search connections / people by name
-    public List<Profile> searchProfilesByName(String keyword) {
-        List<Profile> results = new ArrayList<>();
-        for (Profile profile : profiles.values()) {
-            if (profile.getFullName().toLowerCase().contains(keyword.toLowerCase())) {
-                results.add(profile);
+            if (!profile.getSkills().contains(skill)) {
+                profile.getSkills().add(skill);
+                System.out.println("Skill added.");
+            } else {
+                System.out.println("Skill already exists.");
             }
         }
-        return results;
     }
-
+    
     // Find people with a specific skill
     public List<Profile> searchProfilesBySkill(String skill) {
         List<Profile> results = new ArrayList<>();

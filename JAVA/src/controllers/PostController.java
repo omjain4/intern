@@ -7,16 +7,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import model.Post.PostType;
 public class PostController {
-    // HashMap indexing Posts by their postId
     private Map<Integer, Post> posts;
 
+
+    private PostType postType;
     public PostController() {
         this.posts = new HashMap<>();
     }
 
-    // Added logic: Prevent null posts and duplicate post IDs
+    //method to add a post
     public void addPost(Post post) {
         if (post == null) {
             System.out.println("Error: Post cannot be null.");
@@ -30,16 +31,13 @@ public class PostController {
         
         posts.put(post.getPostId(), post);
     }
-
-    // A beginner-friendly method to create and add a new post directly
+    //method to create a post with validation logic
     public Post createPost(int userId, String description, PostType postType) {
-        // 1. Basic validation
         if (userId <= 0) {
             System.out.println("Error: Invalid User ID.");
             return null;
         }
 
-        // Count words using basic split
         int wordCount = 0;
         if (description != null && !description.trim().isEmpty()) {
             wordCount = description.trim().split("\\s+").length;
@@ -55,25 +53,23 @@ public class PostController {
             return null;
         }
 
-        // 2. Generate a simple ID based on existing keys
+        //Generate a simple ID based on existing keys
         int newPostId = 1;
         if (!posts.isEmpty()) {
             newPostId = Collections.max(posts.keySet()) + 1;
         }
 
-        // 3. Create and add object
         Post newPost = new Post(newPostId, userId, description, postType);
         this.addPost(newPost);
         
         return newPost;
     }
 
-    // Added logic: Return a copy of the list to protect the internal state from external modifications
     public List<Post> getAllPosts() {
         return new ArrayList<>(posts.values());
     }
 
-    // Added logic: Remove by Post ID and check if the requesting user is the owner to prevent unauthorized deletes
+    //Remove by Post ID and check if the requesting user is the owner to prevent unauthorized deletes
     public void removePost(int postId, int requestingUserId) {
         Post postToRemove = posts.get(postId);
         
@@ -91,15 +87,24 @@ public class PostController {
         System.out.println("Post successfully deleted.");
     }
 
-    // LinkedIn-like logic: Like a post
+    //Like a post
     public void likePost(int postId) {
         Post post = posts.get(postId);
         if (post != null) {
-             post.addLike();
+             post.setLikes(post.getLikes() + 1);
+             System.out.println("Post liked.");
+        } else {
+             System.out.println("Error: Post not found.");
         }
     }
-
-    // LinkedIn-like logic: Get all posts by a specific user showing in their activity
+  
+    public void displayPost(int postId) {
+        Post post = posts.get(postId);
+        if (post != null) {
+            System.out.println("User [" + post.getUserId() + "] Posted a " + post.getPostType() + ": " + post.getContent() + " | Likes: " + post.getLikes());
+        }
+    }
+    //get post of certain user
     public List<Post> getPostsByUser(int userId) {
         List<Post> results = new ArrayList<>();
         for (Post post : posts.values()) {
@@ -110,22 +115,11 @@ public class PostController {
         return results;
     }
 
-    // LinkedIn-like logic: Feed sorted by most likes (Trending posts)
+    //Feed sorted by most likes
     public List<Post> getTrendingPosts() {
         List<Post> results = new ArrayList<>(posts.values());
         // Simple manual sort using Collections.sort and a basic comparator
         Collections.sort(results, (p1, p2) -> Integer.compare(p2.getLikes(), p1.getLikes()));
-        return results;
-    }
-
-    // LinkedIn-like logic: Filter feed by post type (e.g., only CELEBRATION or EVENT)
-    public List<Post> getPostsByType(PostType type) {
-        List<Post> results = new ArrayList<>();
-        for (Post post : posts.values()) {
-            if (post.getPostType() == type) {
-                 results.add(post);
-            }
-        }
         return results;
     }
 }

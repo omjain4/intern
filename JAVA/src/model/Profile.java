@@ -49,23 +49,20 @@ public class Profile {
         this.summary = summary;
     }
 
-    public void addExperience(String jobTitle, String company, String duration) {
-        String entry = jobTitle + " at " + company + " (" + duration + ")";
-        this.experience.add(entry);
-    }
-
     public List<String> getExperience() {
-        return new ArrayList<>(experience);
+        return experience;
     }
 
-    public void addSkill(String skill) {
-        if (!this.skills.contains(skill)) {
-            this.skills.add(skill);
-        }
+    public void setExperience(List<String> experience) {
+        this.experience = experience;
     }
 
     public List<String> getSkills() {
-        return new ArrayList<>(skills);
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
     }
     
     // Feature: Returns Optional to avoid null pointer exceptions

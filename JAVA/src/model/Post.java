@@ -12,10 +12,6 @@ public class Post {
     private PostType postType;
 
     public Post(int postId, int userId, String content, PostType postType) {
-        if (content != null && content.split("\\s+").length > 1000) {
-            throw new IllegalArgumentException("Post content exceeds the maximum limit of 1000 words.");
-        }
-        
         this.postId = postId;
         this.userId = userId;
         this.content = content;
@@ -39,17 +35,11 @@ public class Post {
         return likes;
     }
 
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
     public PostType getPostType() {
         return postType;
-    }
-
-    // Method to add a like to the post
-    public void addLike() {
-        this.likes++;
-    }
-
-    // Method to display post-details
-    public void displayPost() {
-        System.out.println("User [" + userId + "] Posted a " + postType + ": " + content + " | Likes: " + likes);
     }
 }

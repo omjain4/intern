@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public class CompanyController {
-    // HashMap to map companyId to the Company object
     private Map<Integer, Company> companies;
 
     public CompanyController() {
@@ -19,7 +18,7 @@ public class CompanyController {
             companies.put(company.getCompanyId(), company);
         }
     }
-
+    //creating a list of companies from the hashmap values as to not change the original map
     public List<Company> getAllCompanies() {
         return new ArrayList<>(companies.values());
     }
@@ -32,7 +31,7 @@ public class CompanyController {
         return companies.get(companyId);
     }
 
-    // LinkedIn-like logic: Search companies by industry
+    //Search companies by industry
     public List<Company> getCompaniesByIndustry(String industry) {
         List<Company> results = new ArrayList<>();
         for (Company company : companies.values()) {
@@ -43,7 +42,7 @@ public class CompanyController {
         return results;
     }
 
-    // LinkedIn-like logic: Search companies by name keyword
+    //Search companies by name keyword
     public List<Company> searchCompaniesByName(String keyword) {
         List<Company> results = new ArrayList<>();
         for (Company company : companies.values()) {
@@ -52,5 +51,16 @@ public class CompanyController {
             }
         }
         return results;
+    }
+
+    public void printCompanyDetails(int companyId) {
+        Company company = companies.get(companyId);
+        if (company != null) {
+            System.out.println("Company Name: " + company.getName());
+            System.out.println("  Industry: " + company.getIndustry());
+            System.out.println("  Location: " + company.getLocation());
+        } else {
+            System.out.println("Company not found.");
+        }
     }
 }

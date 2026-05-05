@@ -11,15 +11,6 @@ public class User implements Displayable {
     private String phone;
 
     public User(int userId, String username, String email, String password, String role, String phone) {
-        if (email == null || !email.contains("@")) {
-            throw new IllegalArgumentException("Invalid email format. Must contain '@'.");
-        }
-        if (password == null || password.length() < 6) {
-            throw new IllegalArgumentException("Password must be at least 6 characters long.");
-        }
-        if (username == null || username.trim().isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be empty.");
-        }
         this.userId = userId;
         this.username = username;
         this.email = email;
@@ -40,24 +31,12 @@ public class User implements Displayable {
         return email;
     }
 
-    protected String getPassword() {
+    public String getPassword() {
         return password;
     }
     
-    public boolean checkPassword(String inputPassword) {
-        return this.password.equals(inputPassword);
-    }
-
-    public void updatePassword(String oldPassword, String newPassword) {
-        if (checkPassword(oldPassword)) {
-            if (newPassword != null && newPassword.length() >= 6) {
-                this.password = newPassword;
-            } else {
-                throw new IllegalArgumentException("New password must be at least 6 characters.");
-            }
-        } else {
-            throw new SecurityException("Old password does not match.");
-        }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getRole() {
@@ -65,7 +44,7 @@ public class User implements Displayable {
     }
 
     public Optional<String> getPhone() {
-        return Optional.ofNullable(phone);
+        return  Optional.ofNullable(phone);
     }
 
     public void setPhone(String phone) {

@@ -28,11 +28,4 @@ public class Company {
     public String getLocation() {
         return location;
     }
-
-    // A simple method to print company details
-    public void printCompanyDetails() {
-        System.out.println("Company Name: " + name);
-        System.out.println("  Industry: " + industry);
-        System.out.println("  Location: " + location);
-    }
 }
