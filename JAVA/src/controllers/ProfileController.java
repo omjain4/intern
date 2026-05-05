@@ -82,7 +82,7 @@ public void setProfileSummary(int userId, String newSummary) {
         }
     }
 
-    // LinkedIn-like logic: Add a skill to a user's profile
+    //Add a skill to a user's profile
     public void addSkillToProfile(int userId, String skill) {
         Profile profile = getProfileByUserId(userId);
         if (profile != null) {
