@@ -17,6 +17,13 @@ public class ProfileController {
 
     public void addProfile(Profile profile) {
         if (profile != null) {
+            // BUG Silent Data Overwrite
+            // The bug was: Blindly putting profile replaces the existing Profile mapped to this User ID.
+            // Fix: Decline profile creation if one already exists for this User ID.
+            if (profiles.containsKey(profile.getUserId())) {
+                System.out.println("Error: Profile for User ID " + profile.getUserId() + " already exists.");
+                return;
+            }
             profiles.put(profile.getUserId(), profile);
             System.out.println("Profile added to registry.");
         }

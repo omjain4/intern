@@ -15,7 +15,8 @@ public class Main {
         // 2. Users: Create and Register via Controller
         System.out.println("1. USERS & PROFILES");
         User alice = new User(1, "AliceDev", "alice@example.com", "pass123", "user", "555-1234");
-        User bob = new User(2, "BobRecruiter", "bob@example.com", "secure456", "recruiter", null);
+        // Simplified object creation: no need to provide standard omitted parameters
+        User bob = new User(2, "BobRecruiter", "bob@example.com", "secure456", "recruiter");
         
         userController.registerUser(alice);
         userController.registerUser(bob);
@@ -26,9 +27,9 @@ public class Main {
             System.out.println("Alice is logged in!\n");
         }
 
-        // Create profiles for them
-        Profile aliceProfile = new Profile(1, alice.getUserId(), "Alice Smith", "Software Engineer", null);
-        Profile bobProfile = new Profile(2, bob.getUserId(), "Bob Johnson", "Tech Recruiter at FutureJobs", null);
+        // Create profiles for them using simplified constructors (defaults to null photo)
+        Profile aliceProfile = new Profile(1, alice.getUserId(), "Alice Smith", "Software Engineer");
+        Profile bobProfile = new Profile(2, bob.getUserId(), "Bob Johnson", "Tech Recruiter at FutureJobs");
         profileController.addProfile(aliceProfile);
         profileController.addProfile(bobProfile);
 
@@ -58,8 +59,9 @@ public class Main {
         System.out.println("\n3. POSTS & FEED");
         // Create posts via PostController
         Post p1 = postController.createPost(alice.getUserId(), "I'm thrilled to announce I just mastered Java Controllers!", PostType.CELEBRATION);
-        Post p2 = postController.createPost(bob.getUserId(), "TechCorp is hiring for Java roles! Check my page.", PostType.NORMAL);
-        
+        // Using simplified createPost method where PostType defaults to NORMAL automatically
+        Post p2 = postController.createPost(bob.getUserId(), "TechCorp is hiring for Java roles! Check my page.");
+        Post P3 = postController.createPost(bob.getUserId(), "hello this is test post");
         // Simulating likes
         if (p1 != null) postController.likePost(p1.getPostId());
         if (p1 != null) postController.likePost(p1.getPostId()); // 2 likes

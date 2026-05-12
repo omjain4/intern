@@ -15,6 +15,13 @@ public class CompanyController {
 
     public void addCompany(Company company) {
         if (company != null) {
+            // BUG - Silent Data Overwrite
+            // The bug was: Adding duplicate Company ID erased the previous one automatically.
+            // Fix: Check container to guard against duplicates before adding.
+            if (companies.containsKey(company.getCompanyId())) {
+                System.out.println("Error: Company with ID " + company.getCompanyId() + " already exists.");
+                return;
+            }
             companies.put(company.getCompanyId(), company);
         }
     }
@@ -34,8 +41,13 @@ public class CompanyController {
     //Search companies by industry
     public List<Company> getCompaniesByIndustry(String industry) {
         List<Company> results = new ArrayList<>();
+        // BUG FIX - NullPointerException
+        // The bug was: Null queries or existing Companies with missing industries crashed the loop mapping.
+        // Fix: Verified both 'industry' query and 'company.getIndustry()' aren't null before calling `.equalsIgnoreCase()`.
+        if (industry == null) return results;
+        
         for (Company company : companies.values()) {
-            if (company.getIndustry().equalsIgnoreCase(industry)) {
+            if (company.getIndustry() != null && company.getIndustry().equalsIgnoreCase(industry)) {
                 results.add(company);
             }
         }
@@ -45,8 +57,13 @@ public class CompanyController {
     //Search companies by name keyword
     public List<Company> searchCompaniesByName(String keyword) {
         List<Company> results = new ArrayList<>();
+        // BUG - NullPointerException
+        // The bug was: Missing name keyword or null company names caused app crash.
+        // Fix: Added explicit null filtering checks.
+        if (keyword == null) return results;
+
         for (Company company : companies.values()) {
-            if (company.getName().toLowerCase().contains(keyword.toLowerCase())) {
+            if (company.getName() != null && company.getName().toLowerCase().contains(keyword.toLowerCase())) {
                 results.add(company);
             }
         }

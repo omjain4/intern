@@ -16,6 +16,13 @@ public class JobController {
 
     public void addJob(Job job) {
         if (job != null) {
+            // BUG - Silent Data Overwrite
+            // The bug was: HashMap.put overwrites existing data blindly. If two jobs have the same ID, the first is lost.
+            // Fix: Check if job ID already exists before adding.
+            if (jobs.containsKey(job.getJobId())) {
+                System.out.println("Error: Job with ID " + job.getJobId() + " already exists.");
+                return;
+            }
             jobs.put(job.getJobId(), job);
         }
     }
@@ -37,8 +44,13 @@ public class JobController {
     // Search jobs by keyword in title using simple loop
     public List<Job> searchJobsByTitle(String keyword) {
         List<Job> results = new ArrayList<>();
+        // BUG -> NullPointerException
+        // The bug was: Calling .toLowerCase() on a null keyword or null job title crashes the program.
+        // Fix: Explicitly check for null keyword and job title before matching.
+        if (keyword == null) return results;
+        
         for (Job job : jobs.values()) {
-            if (job.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+            if (job.getTitle() != null && job.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
                 results.add(job);
             }
         }
@@ -48,8 +60,13 @@ public class JobController {
     // Filter jobs by location
     public List<Job> searchJobsByLocation(String location) {
         List<Job> results = new ArrayList<>();
+        // BUG -> NullPointerException
+        // The bug was: Calling .equalsIgnoreCase() on null location strings causes crashes.
+        // Fix: Explicit null checks added.
+        if (location == null) return results;
+
         for (Job job : jobs.values()) {
-            if (job.getLocation().equalsIgnoreCase(location)) {
+            if (job.getLocation() != null && job.getLocation().equalsIgnoreCase(location)) {
                 results.add(job);
             }
         }

@@ -31,6 +31,11 @@ public class PostController {
         
         posts.put(post.getPostId(), post);
     }
+    // Overloaded method making PostType optional (defaults to NORMAL)
+    public Post createPost(int userId, String description) {
+        return createPost(userId, description, PostType.NORMAL);
+    }
+
     //method to create a post with validation logic
     public Post createPost(int userId, String description, PostType postType) {
         if (userId <= 0) {
@@ -67,6 +72,22 @@ public class PostController {
 
     public List<Post> getAllPosts() {
         return new ArrayList<>(posts.values());
+    }
+
+    // BUG -? Cascade Delete: Remove all posts made by a deleted user
+    public void removeAllPostsByUser(int userId) {
+        // Collect all post IDs made by this user to avoid ConcurrentModificationException during removal
+        List<Integer> postsToRemove = new ArrayList<>();
+        for (Post post : posts.values()) {
+            if (post.getUserId() == userId) {
+                postsToRemove.add(post.getPostId());
+            }
+        }
+        // Remove those posts
+        for (Integer id : postsToRemove) {
+            posts.remove(id);
+        }
+        System.out.println("All posts by User ID " + userId + " have been removed.");
     }
 
     //Remove by Post ID and check if the requesting user is the owner to prevent unauthorized deletes

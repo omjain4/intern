@@ -14,6 +14,16 @@ public class Profile {
     private List<String> experience;
     private List<String> skills;
 
+    public Profile(int profileId, int userId, String fullName, String headline) {
+        this.profileId = profileId;
+        this.userId = userId;
+        this.fullName = fullName;
+        this.headline = headline;
+        this.profilePhoto = null;
+        this.experience = new ArrayList<>();
+        this.skills = new ArrayList<>();
+    }
+
     public Profile(int profileId, int userId, String fullName, String headline, String profilePhoto) {
         this.profileId = profileId;
         this.userId = userId;
@@ -53,20 +63,33 @@ public class Profile {
         return experience;
     }
 
+    // [BUG FIX - Missing Empty Array Validations]
+    // The bug was: External systems could do `profile.setExperience(null)` causing `for(String experience : getExperience())` loops to crash.
+    // Fix: Ensures arrays can never be internally null, falling back securely to empty structures automatically.
     public void setExperience(List<String> experience) {
-        this.experience = experience;
+        if (experience == null) {
+            this.experience = new ArrayList<>();
+        } else {
+            this.experience = experience;
+        }
     }
 
     public List<String> getSkills() {
         return skills;
     }
 
+    // [BUG FIX - Missing Empty Array Validations] 
+    // The bug was: Like experience arrays, skills could be overwritten via setter explicitly with null.
+    // Fix: Forces array instantiation upon null detection.
     public void setSkills(List<String> skills) {
-        this.skills = skills;
+        if (skills == null) {
+            this.skills = new ArrayList<>();
+        } else {
+            this.skills = skills;
+        }
     }
     
-    // Feature: Returns Optional to avoid null pointer exceptions
-    public Optional<String> getProfilePhoto() {
-        return Optional.ofNullable(profilePhoto);
+    public String getProfilePhoto() {
+        return profilePhoto;
     }
 }

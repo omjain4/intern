@@ -11,7 +11,6 @@ import java.util.Map;
 public class UserController {
     // Primary index
     private Map<String, User> userMapByEmail;
-    // Secondary index (NEW)
     private Map<String, User> userMapByUsername;
 
     public UserController() {
@@ -62,16 +61,37 @@ public class UserController {
         return userMapByUsername.get(username.toLowerCase()); //0(1)
     }
 
-    public void removeUser(User user) {
+    // BUG - Loss of Referential Integrity
+    // The bug was: Removing a User did not remove their respective Profile and Posts from the feed, leaving undeletable 'ghost' records.
+    // Fix: Redesigned as a Cascade Delete. Triggers deletion in profileController and postController synchronously removing EVERYTHING.
+    public void removeUser(User user, ProfileController profileController, PostController postController) {
         if (user != null) {
-            userMapByEmail.remove(user.getEmail().toLowerCase());
-            userMapByUsername.remove(user.getUsername().toLowerCase());
+            int userId = user.getUserId();
+            if (user.getEmail() != null) userMapByEmail.remove(user.getEmail().toLowerCase());
+            if (user.getUsername() != null) userMapByUsername.remove(user.getUsername().toLowerCase());
+            
+            // Cascade delete profile and posts
+            if (profileController != null) {
+                profileController.removeProfile(userId);
+            }
+            if (postController != null) {
+                postController.removeAllPostsByUser(userId);
+            }
+            
+            System.out.println("User and all associated data successfully removed.");
         }
     }
     
 
     //Login logic checks matching email and password
     public User loginUser(String email, String password) {
+        // BUG  NullPointerException]
+        // The bug was: Malformed arguments (like missing email check) sent null strings causing `.toLowerCase()` to crash.
+        // Fix: Blocks logic gate immediately if values are null.
+        if (email == null || password == null) {
+            System.out.println("Error: Invalid email or password.");
+            return null;
+        }
         User user = userMapByEmail.get(email.toLowerCase());
         if (user != null && user.getPassword().equals(password)) {
             System.out.println("Login successful!");

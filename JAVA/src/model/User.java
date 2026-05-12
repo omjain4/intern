@@ -10,6 +10,15 @@ public class User implements Displayable {
     private String role;
     private String phone;
 
+    public User(int userId, String username, String email, String password, String role) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.phone = null;
+    }
+
     public User(int userId, String username, String email, String password, String role, String phone) {
         this.userId = userId;
         this.username = username;
@@ -43,8 +52,8 @@ public class User implements Displayable {
         return role;
     }
 
-    public Optional<String> getPhone() {
-        return  Optional.ofNullable(phone);
+    public String getPhone() {
+        return phone;
     }
 
     public void setPhone(String phone) {
